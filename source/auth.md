@@ -98,7 +98,7 @@ Authorization: 'Bearer {ACCESS_TOKEN}'
 
 返回值根据不同的应用，和用户授权scope会有差异。
 
-### 小程序授权
+### 小程序授权（暂未开放）
 
 #### 客户端获取企业微信code
 
