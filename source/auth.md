@@ -98,7 +98,7 @@ Authorization: 'Bearer {ACCESS_TOKEN}'
 
 返回值根据不同的应用，和用户授权scope会有差异。
 
-### 小程序授权（暂未开放）
+### 小程序授权
 
 #### 客户端获取企业微信code
 
@@ -142,10 +142,10 @@ GET https://统一用户中心IP/auth/realms/master/miniappext/gettoken?client_i
 
 ```
 {
-   "errcode":0，
-   "errmsg":"ok"，
-   "access_token": "accesstoken000001",
-   "expires_in": 7200
+    "access_token": "xxxxxx",
+    "expires_in": 60,
+    "refresh_expires_in": 3600,
+    "refresh_token": "xxxxx"
 }
 ```
 
