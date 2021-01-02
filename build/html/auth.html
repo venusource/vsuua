@@ -29,7 +29,6 @@
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
         <script src="_static/doctools.js"></script>
-        <script src="_static/language_data.js"></script>
         <script src="_static/translations.js"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
@@ -37,6 +36,7 @@
     
     <link rel="index" title="索引" href="genindex.html" />
     <link rel="search" title="搜索" href="search.html" />
+    <link rel="next" title="应用开发指南" href="springbootint.html" />
     <link rel="prev" title="开发指南" href="dev-guide.html" /> 
 </head>
 
@@ -97,10 +97,16 @@
 </li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#oauth2-0">OAuth2.0授权（客户端）</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#spring-boot">Spring boot集成</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id5">小程序授权</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id6">客户端获取企业微信code</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#accesstoken">获取accessToken</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id7">获取用户信息</a></li>
 </ul>
 </li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="springbootint.html">应用开发指南</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tokenexchange.html">通过应用token换取企业微信access_token</a></li>
 </ul>
 
             
@@ -184,7 +190,7 @@
 <div class="section" id="code">
 <h4>获取code<a class="headerlink" href="#code" title="永久链接至标题">¶</a></h4>
 <p>应用判断用户未登录后，构造如下的连接来获取code:</p>
-<p>https://统一用户中心IP/realms/{realm-name}/protocol/openid-connect/auth?response_type=code&amp;client_id=CLIENT_ID&amp;
+<p>https://统一用户中心IP/auth/realms/{realm-name}/protocol/openid-connect/auth?response_type=code&amp;client_id=CLIENT_ID&amp;
 redirect_uri=CALLBACK_URL&amp;scope=openid&amp;kc_idp_hint=wechat-work&amp;state=STATE</p>
 <p>参数说明：</p>
 <table border="1" class="docutils">
@@ -232,7 +238,7 @@ redirect_uri=CALLBACK_URL&amp;scope=openid&amp;kc_idp_hint=wechat-work&amp;state
 <div class="section" id="access-token">
 <h4>获取access_token<a class="headerlink" href="#access-token" title="永久链接至标题">¶</a></h4>
 <p>应用拿到code后，使用code换到access_token，向下面的连接发送POST请求：</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">POST</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">统一用户中心IP</span><span class="o">/</span><span class="n">realms</span><span class="o">/</span><span class="p">{</span><span class="n">realm</span><span class="o">-</span><span class="n">name</span><span class="p">}</span><span class="o">/</span><span class="n">protocol</span><span class="o">/</span><span class="n">openid</span><span class="o">-</span><span class="n">connect</span><span class="o">/</span><span class="n">token</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">POST</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">统一用户中心IP</span><span class="o">/</span><span class="n">auth</span><span class="o">/</span><span class="n">realms</span><span class="o">/</span><span class="p">{</span><span class="n">realm</span><span class="o">-</span><span class="n">name</span><span class="p">}</span><span class="o">/</span><span class="n">protocol</span><span class="o">/</span><span class="n">openid</span><span class="o">-</span><span class="n">connect</span><span class="o">/</span><span class="n">token</span>
 <span class="n">Content</span><span class="o">-</span><span class="n">Type</span><span class="p">:</span> <span class="n">application</span><span class="o">/</span><span class="n">x</span><span class="o">-</span><span class="n">www</span><span class="o">-</span><span class="n">form</span><span class="o">-</span><span class="n">urlencoded</span>
 
 <span class="n">grant_type</span><span class="o">=</span><span class="n">authorization_code</span><span class="o">&amp;</span><span class="n">client_id</span><span class="o">=</span><span class="n">YOUR_CLIENT_ID</span><span class="o">&amp;</span><span class="n">client_secret</span><span class="o">=</span><span class="n">YOUR_CLIENT_SECRET</span><span class="o">&amp;</span><span class="n">code</span><span class="o">=</span><span class="n">AUTHORIZATION_CODE</span><span class="o">&amp;</span><span class="n">redirect_uri</span><span class="o">=</span><span class="n">REDIRECT_URI</span>
@@ -290,7 +296,7 @@ redirect_uri=CALLBACK_URL&amp;scope=openid&amp;kc_idp_hint=wechat-work&amp;state
 <div class="section" id="id4">
 <h4>获取用户信息<a class="headerlink" href="#id4" title="永久链接至标题">¶</a></h4>
 <p>发送下面的HTTP请求获取用户信息</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">GET</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">统一用户中心IP</span><span class="o">/</span><span class="n">realms</span><span class="o">/</span><span class="p">{</span><span class="n">realm</span><span class="o">-</span><span class="n">name</span><span class="p">}</span><span class="o">/</span><span class="n">protocol</span><span class="o">/</span><span class="n">openid</span><span class="o">-</span><span class="n">connect</span><span class="o">/</span><span class="n">userinfo</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">GET</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">统一用户中心IP</span><span class="o">/</span><span class="n">auth</span><span class="o">/</span><span class="n">realms</span><span class="o">/</span><span class="p">{</span><span class="n">realm</span><span class="o">-</span><span class="n">name</span><span class="p">}</span><span class="o">/</span><span class="n">protocol</span><span class="o">/</span><span class="n">openid</span><span class="o">-</span><span class="n">connect</span><span class="o">/</span><span class="n">userinfo</span>
 <span class="n">Authorization</span><span class="p">:</span> <span class="s1">&#39;Bearer </span><span class="si">{ACCESS_TOKEN}</span><span class="s1">&#39;</span>
 </pre></div>
 </div>
@@ -317,108 +323,73 @@ redirect_uri=CALLBACK_URL&amp;scope=openid&amp;kc_idp_hint=wechat-work&amp;state
 </div>
 </div>
 </div>
-<div class="section" id="oauth2-0">
-<h2>OAuth2.0授权（客户端）<a class="headerlink" href="#oauth2-0" title="永久链接至标题">¶</a></h2>
-<p>此认证方式适用于C/S应用、小程序等场景。</p>
-<p>TODO</p>
-</div>
-<div class="section" id="spring-boot">
-<h2>Spring boot集成<a class="headerlink" href="#spring-boot" title="永久链接至标题">¶</a></h2>
-<p>统一用户中心支持直接与Spring boot应用集成，完成用户认证和资源访问控制功能。</p>
-<p>增加如下依赖</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">dependency</span><span class="o">&gt;</span>
-	<span class="o">&lt;</span><span class="n">groupId</span><span class="o">&gt;</span><span class="n">org</span><span class="o">.</span><span class="n">springframework</span><span class="o">.</span><span class="n">boot</span><span class="o">&lt;/</span><span class="n">groupId</span><span class="o">&gt;</span>
-	<span class="o">&lt;</span><span class="n">artifactId</span><span class="o">&gt;</span><span class="n">spring</span><span class="o">-</span><span class="n">boot</span><span class="o">-</span><span class="n">starter</span><span class="o">-</span><span class="n">security</span><span class="o">&lt;/</span><span class="n">artifactId</span><span class="o">&gt;</span>
-<span class="o">&lt;/</span><span class="n">dependency</span><span class="o">&gt;</span>
-<span class="o">&lt;</span><span class="n">dependency</span><span class="o">&gt;</span>
-    <span class="o">&lt;</span><span class="n">groupId</span><span class="o">&gt;</span><span class="n">org</span><span class="o">.</span><span class="n">keycloak</span><span class="o">&lt;/</span><span class="n">groupId</span><span class="o">&gt;</span>
-    <span class="o">&lt;</span><span class="n">artifactId</span><span class="o">&gt;</span><span class="n">keycloak</span><span class="o">-</span><span class="n">spring</span><span class="o">-</span><span class="n">boot</span><span class="o">-</span><span class="n">starter</span><span class="o">&lt;/</span><span class="n">artifactId</span><span class="o">&gt;</span>
-<span class="o">&lt;/</span><span class="n">dependency</span><span class="o">&gt;</span>
+<div class="section" id="id5">
+<h2>小程序授权<a class="headerlink" href="#id5" title="永久链接至标题">¶</a></h2>
+<div class="section" id="id6">
+<h3>客户端获取企业微信code<a class="headerlink" href="#id6" title="永久链接至标题">¶</a></h3>
+<p>小程序前端先通过下面的接口获取到用户授权码CODE:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">wx</span><span class="o">.</span><span class="n">qy</span><span class="o">.</span><span class="n">login</span><span class="p">({</span>
+  <span class="n">success</span><span class="p">:</span> <span class="n">function</span><span class="p">(</span><span class="n">res</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">code</span><span class="p">)</span> <span class="p">{</span>
+      <span class="o">//</span><span class="n">将code发送到服务器端调用统一认证相关接口</span>
+      <span class="n">wx</span><span class="o">.</span><span class="n">request</span><span class="p">({</span>
+        <span class="n">url</span><span class="p">:</span> <span class="s1">&#39;https://您自己的服务器/&#39;</span><span class="p">,</span>
+        <span class="n">data</span><span class="p">:</span> <span class="p">{</span>
+          <span class="n">code</span><span class="p">:</span> <span class="n">res</span><span class="o">.</span><span class="n">code</span>
+        <span class="p">}</span>
+      <span class="p">})</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+      <span class="n">console</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="s1">&#39;登录失败！&#39;</span> <span class="o">+</span> <span class="n">res</span><span class="o">.</span><span class="n">errMsg</span><span class="p">)</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">});</span>
 </pre></div>
 </div>
-<p>在pom.xml中增加如下依赖管理配置：</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">dependencyManagement</span><span class="o">&gt;</span>
-  <span class="o">&lt;</span><span class="n">dependencies</span><span class="o">&gt;</span>
-    <span class="o">&lt;</span><span class="n">dependency</span><span class="o">&gt;</span>
-      <span class="o">&lt;</span><span class="n">groupId</span><span class="o">&gt;</span><span class="n">org</span><span class="o">.</span><span class="n">keycloak</span><span class="o">.</span><span class="n">bom</span><span class="o">&lt;/</span><span class="n">groupId</span><span class="o">&gt;</span>
-      <span class="o">&lt;</span><span class="n">artifactId</span><span class="o">&gt;</span><span class="n">keycloak</span><span class="o">-</span><span class="n">adapter</span><span class="o">-</span><span class="n">bom</span><span class="o">&lt;/</span><span class="n">artifactId</span><span class="o">&gt;</span>
-      <span class="o">&lt;</span><span class="n">version</span><span class="o">&gt;</span><span class="mf">11.0</span><span class="o">.</span><span class="mi">2</span><span class="o">&lt;/</span><span class="n">version</span><span class="o">&gt;</span>
-      <span class="o">&lt;</span><span class="nb">type</span><span class="o">&gt;</span><span class="n">pom</span><span class="o">&lt;/</span><span class="nb">type</span><span class="o">&gt;</span>
-      <span class="o">&lt;</span><span class="n">scope</span><span class="o">&gt;</span><span class="n">import</span><span class="o">&lt;/</span><span class="n">scope</span><span class="o">&gt;</span>
-    <span class="o">&lt;/</span><span class="n">dependency</span><span class="o">&gt;</span>
-  <span class="o">&lt;/</span><span class="n">dependencies</span><span class="o">&gt;</span>
-<span class="o">&lt;/</span><span class="n">dependencyManagement</span><span class="o">&gt;</span>
-</pre></div>
 </div>
-<p>在配置文件中增加如下配置：</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#认证服务器地址</span>
-<span class="n">keycloak</span><span class="o">.</span><span class="n">auth</span><span class="o">-</span><span class="n">server</span><span class="o">-</span><span class="n">url</span><span class="o">=</span><span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">keycloak</span><span class="o">.</span><span class="n">ide</span><span class="o">.</span><span class="n">gwunion</span><span class="o">.</span><span class="n">cn</span><span class="o">/</span><span class="n">auth</span>
-<span class="c1">#租户名称</span>
-<span class="n">keycloak</span><span class="o">.</span><span class="n">realm</span><span class="o">=</span><span class="n">vsapp</span>
-<span class="c1"># ClientId</span>
-<span class="n">keycloak</span><span class="o">.</span><span class="n">resource</span><span class="o">=</span><span class="n">testapp</span>
-<span class="c1"># 非开放认证</span>
-<span class="n">keycloak</span><span class="o">.</span><span class="n">public</span><span class="o">-</span><span class="n">client</span><span class="o">=</span><span class="n">false</span>
-<span class="c1"># 使用应用角色</span>
-<span class="n">keycloak</span><span class="o">.</span><span class="n">use</span><span class="o">-</span><span class="n">resource</span><span class="o">-</span><span class="n">role</span><span class="o">-</span><span class="n">mappings</span><span class="o">=</span><span class="n">true</span>
-<span class="c1"># 应用secret</span>
-<span class="n">keycloak</span><span class="o">.</span><span class="n">credentials</span><span class="o">.</span><span class="n">secret</span><span class="o">=</span><span class="mi">191</span><span class="n">bad40</span><span class="o">-</span><span class="n">a2d6</span><span class="o">-</span><span class="mi">4252</span><span class="o">-</span><span class="n">be6f</span><span class="o">-</span><span class="n">a5869a4d2771</span>
-</pre></div>
-</div>
-<p>定义资源保护配置：</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">package</span> <span class="n">com</span><span class="o">.</span><span class="n">venusource</span><span class="o">.</span><span class="n">keycloak</span><span class="p">;</span>
-
-<span class="kn">import</span> <span class="nn">org.keycloak.adapters.springboot.KeycloakSpringBootConfigResolver</span><span class="p">;</span>
-<span class="kn">import</span> <span class="nn">org.keycloak.adapters.springsecurity.KeycloakSecurityComponents</span><span class="p">;</span>
-<span class="kn">import</span> <span class="nn">org.keycloak.adapters.springsecurity.authentication.KeycloakAuthenticationProvider</span><span class="p">;</span>
-<span class="kn">import</span> <span class="nn">org.keycloak.adapters.springsecurity.config.KeycloakWebSecurityConfigurerAdapter</span><span class="p">;</span>
-<span class="kn">import</span> <span class="nn">org.springframework.beans.factory.annotation.Autowired</span><span class="p">;</span>
-<span class="kn">import</span> <span class="nn">org.springframework.context.annotation.Bean</span><span class="p">;</span>
-<span class="kn">import</span> <span class="nn">org.springframework.context.annotation.ComponentScan</span><span class="p">;</span>
-<span class="kn">import</span> <span class="nn">org.springframework.context.annotation.Configuration</span><span class="p">;</span>
-<span class="kn">import</span> <span class="nn">org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder</span><span class="p">;</span>
-<span class="kn">import</span> <span class="nn">org.springframework.security.config.annotation.web.builders.HttpSecurity</span><span class="p">;</span>
-<span class="kn">import</span> <span class="nn">org.springframework.security.config.annotation.web.configuration.EnableWebSecurity</span><span class="p">;</span>
-<span class="kn">import</span> <span class="nn">org.springframework.security.core.authority.mapping.SimpleAuthorityMapper</span><span class="p">;</span>
-<span class="kn">import</span> <span class="nn">org.springframework.security.core.session.SessionRegistryImpl</span><span class="p">;</span>
-<span class="kn">import</span> <span class="nn">org.springframework.security.web.authentication.session.RegisterSessionAuthenticationStrategy</span><span class="p">;</span>
-<span class="kn">import</span> <span class="nn">org.springframework.security.web.authentication.session.SessionAuthenticationStrategy</span><span class="p">;</span>
-
-<span class="nd">@Configuration</span>
-<span class="nd">@EnableWebSecurity</span>
-<span class="nd">@ComponentScan</span><span class="p">(</span><span class="n">basePackageClasses</span> <span class="o">=</span> <span class="n">KeycloakSecurityComponents</span><span class="o">.</span><span class="n">class</span><span class="p">)</span>
-<span class="k">class</span> <span class="nc">SecurityConfig</span> <span class="n">extends</span> <span class="n">KeycloakWebSecurityConfigurerAdapter</span> <span class="p">{</span>
-    <span class="o">//</span> <span class="n">Submits</span> <span class="n">the</span> <span class="n">KeycloakAuthenticationProvider</span> <span class="n">to</span> <span class="n">the</span> <span class="n">AuthenticationManager</span>
-    <span class="nd">@Autowired</span>
-    <span class="n">public</span> <span class="n">void</span> <span class="n">configureGlobal</span><span class="p">(</span><span class="n">AuthenticationManagerBuilder</span> <span class="n">auth</span><span class="p">)</span> <span class="n">throws</span> <span class="ne">Exception</span> <span class="p">{</span>
-        <span class="n">KeycloakAuthenticationProvider</span> <span class="n">keycloakAuthenticationProvider</span> <span class="o">=</span> <span class="n">keycloakAuthenticationProvider</span><span class="p">();</span>
-        <span class="n">keycloakAuthenticationProvider</span><span class="o">.</span><span class="n">setGrantedAuthoritiesMapper</span><span class="p">(</span><span class="n">new</span> <span class="n">SimpleAuthorityMapper</span><span class="p">());</span>
-        <span class="n">auth</span><span class="o">.</span><span class="n">authenticationProvider</span><span class="p">(</span><span class="n">keycloakAuthenticationProvider</span><span class="p">);</span>
-    <span class="p">}</span>
-
-    <span class="nd">@Bean</span>
-    <span class="n">public</span> <span class="n">KeycloakSpringBootConfigResolver</span> <span class="n">KeycloakConfigResolver</span><span class="p">()</span> <span class="p">{</span>
-        <span class="k">return</span> <span class="n">new</span> <span class="n">KeycloakSpringBootConfigResolver</span><span class="p">();</span>
-    <span class="p">}</span>
-
-    <span class="o">//</span> <span class="n">Specifies</span> <span class="n">the</span> <span class="n">session</span> <span class="n">authentication</span> <span class="n">strategy</span>
-    <span class="nd">@Bean</span>
-    <span class="nd">@Override</span>
-    <span class="n">protected</span> <span class="n">SessionAuthenticationStrategy</span> <span class="n">sessionAuthenticationStrategy</span><span class="p">()</span> <span class="p">{</span>
-        <span class="k">return</span> <span class="n">new</span> <span class="n">RegisterSessionAuthenticationStrategy</span><span class="p">(</span><span class="n">new</span> <span class="n">SessionRegistryImpl</span><span class="p">());</span>
-    <span class="p">}</span>
-
-    <span class="nd">@Override</span>
-    <span class="n">protected</span> <span class="n">void</span> <span class="n">configure</span><span class="p">(</span><span class="n">HttpSecurity</span> <span class="n">http</span><span class="p">)</span> <span class="n">throws</span> <span class="ne">Exception</span> <span class="p">{</span>
-        <span class="nb">super</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span><span class="n">http</span><span class="p">);</span>
-        <span class="n">http</span><span class="o">.</span><span class="n">authorizeRequests</span><span class="p">()</span>
-            <span class="o">.</span><span class="n">antMatchers</span><span class="p">(</span><span class="s2">&quot;/customers*&quot;</span><span class="p">,</span> <span class="s2">&quot;/users*&quot;</span><span class="p">)</span>
-            <span class="o">.</span><span class="n">hasRole</span><span class="p">(</span><span class="s2">&quot;clientuser&quot;</span><span class="p">)</span>
-            <span class="o">.</span><span class="n">anyRequest</span><span class="p">()</span>
-            <span class="o">.</span><span class="n">permitAll</span><span class="p">();</span>
-    <span class="p">}</span>
+<div class="section" id="accesstoken">
+<h3>获取accessToken<a class="headerlink" href="#accesstoken" title="永久链接至标题">¶</a></h3>
+<p>** 此接口为了安全，必须从服务器端调用，严禁在客户端直接发起请求 **</p>
+<p>通过下面的HTTP请求获取access_token:</p>
+<p>GET https://统一用户中心IP/auth/realms/master/miniappext/gettoken?client_id=CLIENT_ID&amp;secret=SECRET&amp;code=CODE</p>
+<p>参数说明：</p>
+<table border="1" class="docutils">
+<thead>
+<tr>
+<th>参数</th>
+<th>是否必须</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>client_id</td>
+<td>是</td>
+<td>应用唯一标识</td>
+</tr>
+<tr>
+<td>secret</td>
+<td>是</td>
+<td>应用secret，由统一认证平台提供</td>
+</tr>
+<tr>
+<td>code</td>
+<td>是</td>
+<td>小程序前端获取到的code</td>
+</tr>
+</tbody>
+</table><p>返回值：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;access_token&quot;</span><span class="p">:</span> <span class="s2">&quot;xxxxxx&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;expires_in&quot;</span><span class="p">:</span> <span class="mi">60</span><span class="p">,</span>
+    <span class="s2">&quot;refresh_expires_in&quot;</span><span class="p">:</span> <span class="mi">3600</span><span class="p">,</span>
+    <span class="s2">&quot;refresh_token&quot;</span><span class="p">:</span> <span class="s2">&quot;xxxxx&quot;</span>
 <span class="p">}</span>
 </pre></div>
+</div>
+</div>
+<div class="section" id="id7">
+<h3>获取用户信息<a class="headerlink" href="#id7" title="永久链接至标题">¶</a></h3>
+<p>同OAuth2.0授权（WEB）中的获取用户信息接口。</p>
 </div>
 </div>
 </div>
@@ -430,6 +401,8 @@ redirect_uri=CALLBACK_URL&amp;scope=openid&amp;kc_idp_hint=wechat-work&amp;state
           <footer>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="springbootint.html" class="btn btn-neutral float-right" title="应用开发指南" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="dev-guide.html" class="btn btn-neutral float-left" title="开发指南" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
