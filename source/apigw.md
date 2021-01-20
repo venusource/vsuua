@@ -122,6 +122,6 @@ refresh_token	更新access_token的凭证
 
 [获取部门列表](https://open.work.weixin.qq.com/api/doc/90000/90135/90208)
 
-### 消息推送
+#### 消息推送
 
 [发送应用消息](https://open.work.weixin.qq.com/api/doc/90000/90135/90236)
