@@ -1,0 +1,332 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>API网关 &mdash; uua dev 0.1 文档</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/translations.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="索引" href="genindex.html" />
+    <link rel="search" title="搜索" href="search.html" />
+    <link rel="prev" title="应用开发指南" href="springbootint.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> uua dev
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="intro.html">简介</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dev-guide.html">开发指南</a></li>
+<li class="toctree-l1"><a class="reference internal" href="auth.html">开放认证</a></li>
+<li class="toctree-l1"><a class="reference internal" href="springbootint.html">应用开发指南</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">API网关</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#access-token">获取access_token</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id1">调用企业微信接口</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id2">当前已支持的企业微信接口</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id3">通讯录管理</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">uua dev</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>API网关</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/apigw.md.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="api">
+<h1>API网关<a class="headerlink" href="#api" title="永久链接至标题">¶</a></h1>
+<div class="section" id="access-token">
+<h2>获取access_token<a class="headerlink" href="#access-token" title="永久链接至标题">¶</a></h2>
+<p>获取access_token是通过认证中心调用企业微信API接口的第一步，相当于创建了一个登录凭证，其它的业务API接口，都需要依赖于access_token来鉴权调用者身份。
+因此开发者，在使用业务接口前，要获取access_token。</p>
+<p>请求方式： POST（HTTPS）</p>
+<p>请求地址： https://auth.jsyccloud.com/auth/realms/master/protocol/openid-connect/token</p>
+<p>POST参数如下：</p>
+<p>client_id	认证中心提供的client_id</p>
+<p>client_secret	认证中心提供的应用的凭证密钥</p>
+<p>grant_type  固定值：client_credentials</p>
+<p>返回结果：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;access_token&quot;</span><span class="p">:</span><span class="s2">&quot;xxxx&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;expires_in&quot;</span><span class="p">:</span><span class="mi">300</span><span class="p">,</span>
+    <span class="s2">&quot;refresh_expires_in&quot;</span><span class="p">:</span><span class="mi">1800</span><span class="p">,</span>
+    <span class="s2">&quot;refresh_token&quot;</span><span class="p">:</span><span class="s2">&quot;xxxx&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;token_type&quot;</span><span class="p">:</span><span class="s2">&quot;bearer&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;not-before-policy&quot;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span>
+    <span class="s2">&quot;session_state&quot;</span><span class="p">:</span><span class="s2">&quot;b9744ce9-3e9b-4d6e-b482-1748a830d59f&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;scope&quot;</span><span class="p">:</span><span class="s2">&quot;profile email&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>参数说明：</p>
+<p>access_token	获取到的接口调用凭证
+refresh_token	更新access_token的凭证</p>
+</div>
+<div class="section" id="id1">
+<h2>调用企业微信接口<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h2>
+<p>调用企业微信接口时，需要将原api地址：<code class="docutils literal notranslate"><span class="pre">https://qyapi.weixin.qq.com</span></code> 换为企业微信接口网关地址：<code class="docutils literal notranslate"><span class="pre">https://qyapi.jsyccloud.com</span></code>，其它参数保持不变，以读取成员接口为例，原接口地址为：<code class="docutils literal notranslate"><span class="pre">https://qyapi.weixin.qq.com/cgi-bin/user/get?access_token=ACCESS_TOKEN&amp;userid=USERID</span></code>，现需要更换为：<code class="docutils literal notranslate"><span class="pre">https://qyapi.jsyccloud.com/cgi-bin/user/get?access_token=ACCESS_TOKEN&amp;userid=USERID</span></code>，其它请求参数与企业微信官方接口文档相同，地任何改变。</p>
+<p>所有返回格式与企业微信官方文档相同，但系统会根据统一认证平台后端配置的应用权限，过滤掉无权限的数据，如获取用户信息返回值为：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;errcode&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="s2">&quot;errmsg&quot;</span><span class="p">:</span> <span class="s2">&quot;ok&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;userid&quot;</span><span class="p">:</span> <span class="s2">&quot;zhangsan&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;张三&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;department&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span>
+    <span class="s2">&quot;order&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span>
+    <span class="s2">&quot;position&quot;</span><span class="p">:</span> <span class="s2">&quot;后台工程师&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;gender&quot;</span><span class="p">:</span> <span class="s2">&quot;1&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;is_leader_in_dept&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+    <span class="s2">&quot;avatar&quot;</span><span class="p">:</span> <span class="s2">&quot;http://wx.qlogo.cn/mmopen/ajNVdqHZLLA3WJ6DSZUfiakYe37PKnQhBIeOQBO4czqrnZDS79FH5Wm5m4X69TBicnHFlhiafvDwklOpZeXYQQ2icg/0&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;thumb_avatar&quot;</span><span class="p">:</span> <span class="s2">&quot;http://wx.qlogo.cn/mmopen/ajNVdqHZLLA3WJ6DSZUfiakYe37PKnQhBIeOQBO4czqrnZDS79FH5Wm5m4X69TBicnHFlhiafvDwklOpZeXYQQ2icg/100&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;alias&quot;</span><span class="p">:</span> <span class="s2">&quot;jackzhang&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;address&quot;</span><span class="p">:</span> <span class="s2">&quot;广州市海珠区新港中路&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;main_department&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="s2">&quot;extattr&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;attrs&quot;</span><span class="p">:</span> <span class="p">[</span>
+            <span class="p">{</span>
+                <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+                <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;文本名称&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="s2">&quot;文本&quot;</span>
+                <span class="p">}</span>
+            <span class="p">},</span>
+            <span class="p">{</span>
+                <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+                <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;网页名称&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;web&quot;</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="s2">&quot;http://www.test.com&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;标题&quot;</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+        <span class="p">]</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;status&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="s2">&quot;qr_code&quot;</span><span class="p">:</span> <span class="s2">&quot;https://open.work.weixin.qq.com/wwopen/userQRCode?vcode=xxx&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;external_position&quot;</span><span class="p">:</span> <span class="s2">&quot;产品经理&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;external_profile&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;external_corp_name&quot;</span><span class="p">:</span> <span class="s2">&quot;企业简称&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;external_attr&quot;</span><span class="p">:</span> <span class="p">[{</span>
+                <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+                <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;文本名称&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="s2">&quot;文本&quot;</span>
+                <span class="p">}</span>
+            <span class="p">},</span>
+            <span class="p">{</span>
+                <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+                <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;网页名称&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;web&quot;</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="s2">&quot;http://www.test.com&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;标题&quot;</span>
+                <span class="p">}</span>
+            <span class="p">},</span>
+            <span class="p">{</span>
+                <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+                <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;测试app&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;miniprogram&quot;</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="s2">&quot;appid&quot;</span><span class="p">:</span> <span class="s2">&quot;wx8bd80126147dFAKE&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;pagepath&quot;</span><span class="p">:</span> <span class="s2">&quot;/index&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;my miniprogram&quot;</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+        <span class="p">]</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>和官方文档相比，手机号、电话号码、邮箱等信息不返回给应用（根据具体的应用会有所不同）。</p>
+</div>
+<div class="section" id="id2">
+<h2>当前已支持的企业微信接口<a class="headerlink" href="#id2" title="永久链接至标题">¶</a></h2>
+<div class="section" id="id3">
+<h3>通讯录管理<a class="headerlink" href="#id3" title="永久链接至标题">¶</a></h3>
+<p><a class="reference external" href="https://open.work.weixin.qq.com/api/doc/90000/90135/90196">读取成员</a></p>
+<p><a class="reference external" href="https://open.work.weixin.qq.com/api/doc/90000/90135/90201">获取部门成员详情</a></p>
+<p><a class="reference external" href="https://open.work.weixin.qq.com/api/doc/90000/90135/90208">获取部门列表</a></p>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="springbootint.html" class="btn btn-neutral float-left" title="应用开发指南" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; 版权所有 2020, cj.zhao
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
